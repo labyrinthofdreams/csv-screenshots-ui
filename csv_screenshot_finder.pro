@@ -14,12 +14,10 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    flowlayout.cpp \
     tablewidget.cpp \
     directorydialog.cpp
 
 HEADERS  += mainwindow.hpp \
-    flowlayout.h \
     tablewidget.hpp \
     directorydialog.hpp
 
