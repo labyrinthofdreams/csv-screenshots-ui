@@ -44,7 +44,7 @@ bool TableWidget::dropMimeData(int row, int column, const QMimeData* data, Qt::D
 
     const QUrl& url = urls.first();
     // Firefox gives a local file path while Chrome gives an http url
-    if(url.scheme() == "http") {
+    if(url.scheme() == "http" || url.scheme() == "https") {
         // Disable widget while downloading
         setEnabled(false);
         droppedRow = row;
