@@ -90,14 +90,8 @@ void MainWindow::on_actionOpen_triggered() try
             const QString imagePath = inputDir.absoluteFilePath(imageName);
             //qDebug() << imagePath;
             if(QFile::exists(imagePath)) {
-                QPixmap thumb(imagePath);
-                thumb = thumb.scaledToWidth(150);
-                auto item = new QTableWidgetItem;
-                item->setData(Qt::DecorationRole, thumb);
-                //item->setData(Qt::SizeHintRole, thumb.size());
-                //item->setSizeHint(thumb.size());
-                ui->tableCsv->setItem(row, 0, item);
-                ui->tableCsv->setRowHeight(row, thumb.height());
+                QImage image(imagePath);
+                setRowImage(row, image);
             }
         }
 
@@ -123,4 +117,15 @@ void MainWindow::on_buttonBrowseOutput_clicked()
     }
 
     config.setValue("last_output_dir", outputPath);
+}
+
+void MainWindow::setRowImage(const int row, const QImage& image)
+{
+    QPixmap thumb = QPixmap::fromImage(image.scaledToWidth(150));
+    auto item = new QTableWidgetItem;
+    item->setData(Qt::DecorationRole, thumb);
+    //item->setData(Qt::SizeHintRole, thumb.size());
+    //item->setSizeHint(thumb.size());
+    ui->tableCsv->setItem(row, 0, item);
+    ui->tableCsv->setRowHeight(row, thumb.height());
 }

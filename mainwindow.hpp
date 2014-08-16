@@ -6,6 +6,7 @@
 
 class QDragEnterEvent;
 class QDropEvent;
+class QImage;
 
 namespace Ui {
 class MainWindow;
@@ -28,6 +29,8 @@ private:
     Ui::MainWindow *ui;
 
     QSettings config;
+
+    void setRowImage(int row, const QImage& image);
 };
 
 #endif // MAINWINDOW_HPP
