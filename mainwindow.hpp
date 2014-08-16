@@ -25,6 +25,8 @@ private slots:
 
     void on_buttonBrowseOutput_clicked();
 
+    void on_actionDirectories_triggered();
+
 private:
     Ui::MainWindow *ui;
 

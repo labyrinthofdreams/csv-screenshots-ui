@@ -3,6 +3,7 @@
 #include <QtCore>
 #include <QtGui>
 #include <QtWidgets>
+#include "directorydialog.hpp"
 #include "mainwindow.hpp"
 #include "sfcsv/sfcsv.h"
 #include "ui_mainwindow.h"
@@ -76,29 +77,36 @@ void MainWindow::on_actionOpen_triggered() try
     QProgressDialog progress(tr("Loading images"), tr("Cancel"), 0, lines.size() - 1);
     progress.setMinimumDuration(0);
     progress.setModal(true);
-    QDir inputDir("F:\\ICM_Highest_Rated\\Screenshots");
-    for(int row = 0; row < lines.size(); ++row) {
-        const QStringList columns = parseCsv(lines.at(row));
 
-        for(int column = 0; column < columns.size(); ++column) {
-            auto item = new QTableWidgetItem(columns.at(column));
-            ui->tableCsv->setItem(row, column + 1, item);
-        }
+    const QStringList imageDirectories = config.value("image_dirs").toStringList();
+    for(int dirIdx = 0; dirIdx < imageDirectories.size(); ++dirIdx) {
+        const QString& imageDirectory = imageDirectories.at(dirIdx);
+        progress.setLabelText(tr("(%1/%2) Loading images from %3")
+                              .arg(dirIdx + 1).arg(imageDirectories.size()).arg(imageDirectory));
+        QDir inputDir(imageDirectory);
+        for(int row = 0; row < lines.size(); ++row) {
+            const QStringList columns = parseCsv(lines.at(row));
 
-        if(columns.size() >= 2) {
-            const QString imageName = QString("%1.jpg").arg(columns.at(1));
-            const QString imagePath = inputDir.absoluteFilePath(imageName);
-            //qDebug() << imagePath;
-            if(QFile::exists(imagePath)) {
-                QImage image(imagePath);
-                setRowImage(row, image);
+            for(int column = 0; column < columns.size(); ++column) {
+                auto item = new QTableWidgetItem(columns.at(column));
+                ui->tableCsv->setItem(row, column + 1, item);
             }
-        }
 
-        progress.setValue(row);
-        if(progress.wasCanceled()) {
-            ui->tableCsv->setRowCount(row);
-            break;
+            if(columns.size() >= 2) {
+                const QString imageName = QString("%1.jpg").arg(columns.at(1));
+                const QString imagePath = inputDir.absoluteFilePath(imageName);
+                //qDebug() << imagePath;
+                if(QFile::exists(imagePath)) {
+                    QImage image(imagePath);
+                    setRowImage(row, image);
+                }
+            }
+
+            progress.setValue(row);
+            if(progress.wasCanceled()) {
+                ui->tableCsv->setRowCount(row);
+                break;
+            }
         }
     }
 }
@@ -116,6 +124,8 @@ void MainWindow::on_buttonBrowseOutput_clicked()
         return;
     }
 
+    ui->outputDir->setText(outputPath);
+
     config.setValue("last_output_dir", outputPath);
 }
 
@@ -128,4 +138,10 @@ void MainWindow::setRowImage(const int row, const QImage& image)
     //item->setSizeHint(thumb.size());
     ui->tableCsv->setItem(row, 0, item);
     ui->tableCsv->setRowHeight(row, thumb.height());
+}
+
+void MainWindow::on_actionDirectories_triggered()
+{
+    DirectoryDialog dlg;
+    dlg.exec();
 }

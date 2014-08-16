@@ -15,12 +15,15 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     flowlayout.cpp \
-    tablewidget.cpp
+    tablewidget.cpp \
+    directorydialog.cpp
 
 HEADERS  += mainwindow.hpp \
     flowlayout.h \
-    tablewidget.hpp
+    tablewidget.hpp \
+    directorydialog.hpp
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    directorydialog.ui
 
 QMAKE_CXXFLAGS += -std=c++11 -Wall -Wextra -Wpedantic
