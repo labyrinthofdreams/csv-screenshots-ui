@@ -53,7 +53,7 @@ bool TableWidget::dropMimeData(int row, int column, const QMimeData* data, Qt::D
     else {
         const QString imageName = QString("%1.jpg").arg(item(row, 2)->text());
         const QString outputPath = outputDir.absoluteFilePath(imageName);
-        if(!QFile::exists(outputPath)) {
+        if(!QFile::exists(outputPath) || config.value("overwrite", false).toBool()) {
             const QString imagePath = url.toLocalFile();
             QImage image(imagePath);
             image.save(outputPath, "JPEG", 100);

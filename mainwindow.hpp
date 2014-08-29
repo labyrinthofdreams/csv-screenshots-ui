@@ -27,6 +27,8 @@ private slots:
 
     void on_actionDirectories_triggered();
 
+    void on_checkBoxOverwrite_toggled(bool checked);
+
 private:
     Ui::MainWindow *ui;
 

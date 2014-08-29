@@ -37,6 +37,13 @@
         </property>
        </widget>
       </item>
+      <item>
+       <widget class="QCheckBox" name="checkBoxOverwrite">
+        <property name="text">
+         <string>Overwrite</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </item>
     <item>

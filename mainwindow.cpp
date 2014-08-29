@@ -145,3 +145,8 @@ void MainWindow::on_actionDirectories_triggered()
     DirectoryDialog dlg;
     dlg.exec();
 }
+
+void MainWindow::on_checkBoxOverwrite_toggled(bool checked)
+{
+    config.setValue("overwrite", checked);
+}
